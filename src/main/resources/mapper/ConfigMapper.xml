@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="config">
+    <resultMap id="configMap" type="bean.Config">
+        <id property="id" column="id"/>
+        <result property="key" column="key"/>
+        <result property="value" column="value"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="configMap">
+        SELECT * FROM AccountBook.config;
+    </select>
+
+    <insert id="add" parameterType="bean.Config">
+        INSERT INTO AccountBook.config (id, key_, value) VALUES (#{id}, #{key}, #{value});
+    </insert>
+
+    <update id="update" parameterType="bean.Config">
+        UPDATE AccountBook.config SET key_ = #{key}, value = #{value} WHERE id = #{id};
+    </update>
+
+    <delete id="delete" parameterType="bean.Config">
+        DELETE FROM AccountBook.config WHERE id = #{id};
+    </delete>
+
+    <select id="selectByID" parameterType="int" resultMap="configMap">
+        SELECT * FROM AccountBook.config WHERE id = #{id};
+    </select>
+
+    <select id="selectByIDRange" parameterType="map" resultMap="configMap">
+        SELECT * FROM AccountBook.config ORDER BY id DESC limit #{startID}, #{endID};
+    </select>
+
+    <select id="selectByKey" parameterType="String" resultMap="configMap">
+        SELECT * FROM AccountBook.config WHERE key_ = #{key};
+    </select>
+</mapper>

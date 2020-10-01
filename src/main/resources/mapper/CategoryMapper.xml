@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="category">
+    <resultMap id="categoryResultMap" type="bean.Category">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="categoryResultMap">
+        SELECT * FROM AccountBook.category;
+    </select>
+
+    <insert id="add" parameterType="bean.Category">
+        INSERT INTO AccountBook.category where id = null, name = #{name};
+    </insert>
+
+    <update id="update" parameterType="bean.Category">
+        UPDATE AccountBook.category set name=#{name} where id=#{id};
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM AccountBook.category where id = #{id};
+    </delete>
+
+    <select id="selectByID" parameterType="int" resultMap="categoryResultMap">
+        SELECT * FROM AccountBook.category where id = #{id};
+    </select>
+
+    <select id="pagination" parameterType="map" resultMap="categoryResultMap">
+        SELECT * FROM AccountBook.category order by id desc limit #{start}, #{end};
+    </select>
+
+    <select id="selectByName" parameterType="String" resultMap="categoryResultMap">
+        SELECT * FROM AccountBook.category where name = #{name};
+    </select>
+</mapper>

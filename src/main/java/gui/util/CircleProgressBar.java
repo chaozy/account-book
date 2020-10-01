@@ -1,0 +1,104 @@
+package gui.util;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+This part of code is written by HOW2J.
+It constructs a JComponent which draws circle progress bar
+ */
+public class CircleProgressBar extends JPanel {
+    final private int minimumProgress;
+
+    final private int maximumProgress;
+
+    private int progress;
+
+    private String progressText;
+
+    private Color backgroundColor;
+
+    private Color foregroundColor;
+
+    public CircleProgressBar() {
+        minimumProgress = 0;
+        maximumProgress = 100;
+        progressText = "0%";
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D graphics2d = (Graphics2D) g;
+        graphics2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // anti-aliasing is set to true
+        int x;
+        int y;
+        int width;
+        int height;
+        int fontSize;
+        if (getWidth() >= getHeight()) {
+            x = (getWidth() - getHeight()) / 2 + 25;
+            y = 25;
+            width = getHeight() - 50;
+            height = getHeight() - 50;
+            fontSize = getWidth() / 8;
+        } else {
+            x = 25;
+            y = (getHeight() - getWidth()) / 2 + 25;
+            width = getWidth() - 50;
+            height = getWidth() - 50;
+            fontSize = getHeight() / 8;
+        }
+        graphics2d.setStroke(new BasicStroke(20.0f));
+        graphics2d.setColor(backgroundColor);
+        graphics2d.drawArc(x, y, width, height, 0, 360);
+        graphics2d.setColor(foregroundColor);
+        graphics2d.drawArc(x, y, width, height, 90,
+                -(int) (360 * ((progress * 1.0) / (maximumProgress - minimumProgress))));
+        graphics2d.setFont(new Font("Arial", Font.BOLD, fontSize));
+        FontMetrics fontMetrics = graphics2d.getFontMetrics();
+        int digitalWidth = fontMetrics.stringWidth(progressText);
+        int digitalAscent = fontMetrics.getAscent();
+        graphics2d.setColor(foregroundColor);
+        graphics2d.drawString(progressText, getWidth() / 2 - digitalWidth / 2, getHeight() / 2 + digitalAscent / 2);
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        if (progress >= minimumProgress && progress <= maximumProgress)
+            this.progress = progress;
+        if (progress > maximumProgress)
+            this.progress = maximumProgress;
+
+        this.progressText = String.valueOf(progress + "%");
+
+        this.repaint();
+    }
+
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
+        this.repaint();
+    }
+
+    public Color getForegroundColor() {
+        return foregroundColor;
+    }
+
+    public void setForegroundColor(Color foregroundColor) {
+        this.foregroundColor = foregroundColor;
+        this.repaint();
+    }
+
+//    @Override
+//    public Dimension getPreferredSize(){
+//
+//    }
+}

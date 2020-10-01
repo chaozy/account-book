@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="record">
+    <resultMap id="recordMap" type="bean.Record">
+        <id property="id" column="id"/>
+        <result property="spend" column="spend"/>
+        <result property="cid" column="cid"/>
+        <result property="date" column="date"/>
+        <result property="comment" column="comment"/>
+        <result property="payment" column="payment"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="recordMap">
+        SELECT * FROM AccountBook.record;
+    </select>
+
+    <insert id="add" parameterType="bean.Record">
+        INSERT INTO AccountBook.record (id, spend, cid, date, comment, payment)
+        VALUES (#{id}, #{spend}, #{cid}, #{date}, #{comment}, #{payment});
+    </insert>
+
+    <update id="update" parameterType="bean.Record">
+        UPDATE AccountBook.record set spend=#{spend}, cid=#{cid}, date=#{date},
+         comment=#{comment}, payment=#{payment} where id=#{id};
+    </update>
+
+    <delete id="delete" parameterType="bean.Record" >
+        delete FROM AccountBook.record where id = #{id};
+    </delete>
+
+    <select id="selectByID" parameterType="int" resultMap="recordMap">
+        SELECT * FROM AccountBook.record WHERE id=#{id};
+    </select>
+
+    <delete id="deleteByCID" parameterType="int">
+        delete FROM AccountBook.record WHERE cid=#{cid}
+    </delete>
+
+    <select id="list" parameterType="map" resultMap="recordMap">
+        SELECT * FROM AccountBook.record order by id desc limit #{startID}, #{endID};
+    </select>
+
+    <select id="listToday" resultMap="recordMap" parameterType="java.util.Date">
+        SELECT * FROM AccountBook.record WHERE date = #{date};
+    </select>
+
+    <select id="listDateRange" parameterType="map" resultMap="recordMap">
+        SELECT * FROM AccountBook.record WHERE date &gt;= #{startDate} AND date &lt;= #{endDate};
+    </select>
+
+    <select id="selectByCID" resultMap="recordMap" parameterType="int">
+        SELECT * FROM AccountBook.record WHERE cid = #{cid};
+    </select>
+
+</mapper>
